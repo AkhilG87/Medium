@@ -9,13 +9,14 @@ import { useQuery } from '@tanstack/react-query'
 
 const Home = () => {
   const { isLoading, error, data } = useQuery(['blogs'], () =>
-    axios.get('http://localhost:4000/blogs').then((res) => {
+    axios.get('http://localhost:4000/blogs?limit=6').then((res) => {
       return res.data
     }),
   )
   if (isLoading) return 'Loading...'
 
   if (error) return 'An error has occurred: ' + error.message
+
   return (
     <>
       <Navbar />
@@ -39,7 +40,7 @@ const Home = () => {
         </div>
       </div>
       <Trending data={data} />
-      <AllBlogs data={data} />
+      <AllBlogs />
     </>
   )
 }

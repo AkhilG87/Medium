@@ -1,15 +1,18 @@
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+  Outlet,
+} from 'react-router-dom'
 import { React, useContext } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthContext } from './context/authContext'
 import Login from './Pages/login/Login'
-import Navbar from './components/Navbar/Navbar'
 import Home from './Pages/home/Home'
-import Trending from './components/Trending/Trending'
 import Write from './Pages/write/Write'
 import Show from './Pages/show/Show'
 import SignUp from './Pages/signUp/SignUp'
-import AllBlogs from './components/AllBlogs/AllBlogs'
+import Pay from './Pages/pay/Pay'
 
 const queryClient = new QueryClient()
 
@@ -23,6 +26,13 @@ function App() {
 
     return children
   }
+  const Layout = () => {
+    return (
+      <ProtectedRoute>
+        <Outlet />
+      </ProtectedRoute>
+    )
+  }
   const router = createBrowserRouter([
     {
       path: '/',
@@ -32,41 +42,36 @@ function App() {
       path: '/login',
       element: <Login />,
     },
+
     {
       path: '/register',
       element: <SignUp />,
     },
     {
-      path: '/blogs',
-      element: (
-        <ProtectedRoute>
-          <Home />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: '/blogs/new',
-      element: (
-        <ProtectedRoute>
-          <Write />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: '/blogs/:id',
-      element: (
-        <ProtectedRoute>
-          <Show />
-        </ProtectedRoute>
-      ),
-    },
-    {
-      path: '/blogs/:id/edit',
-      element: (
-        <ProtectedRoute>
-          <Write />
-        </ProtectedRoute>
-      ),
+      path: '/',
+      element: <Layout />,
+      children: [
+        {
+          path: 'blogs',
+          element: <Home />,
+        },
+        {
+          path: 'blogs/new',
+          element: <Write />,
+        },
+        {
+          path: 'blogs/:id',
+          element: <Show />,
+        },
+        {
+          path: 'blogs/:id/edit',
+          element: <Write />,
+        },
+        {
+          path: 'pay',
+          element: <Pay />,
+        },
+      ],
     },
   ])
   return (

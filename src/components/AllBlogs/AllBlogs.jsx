@@ -1,25 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './AllBlogs.scss'
 import Blog from '../Blog/Blog'
+import axios from 'axios'
 
+const AllBlogs = () => {
+  const [page, setPage] = useState(1)
+  const [data, setData] = useState(null)
 
-const AllBlogs = ({data}) => {
-  
+  const fetch = async () => {
+    const limit = page * 3
+    const { data } = await axios.get(
+      `http://localhost:4000/blogs?skip=6&limit=${limit}`,
+    )
+    setData(data)
+  }
+  useEffect(() => {
+    fetch()
+  }, [page])
 
   return (
     <div className="allblogs">
       <div className="container">
         <div className="left">
-          {data.slice(6).map((e) => (
-            <Blog
-              key={e._id}
-              path={e._id}
-              name={e.user.name}
-              desc={e.desc}
-              title={e.title}
-              date={e.createdAt}
-            />
-          ))}
+          {data &&
+            data.map((e) => (
+              <Blog
+                key={e._id}
+                path={e._id}
+                name={e.user.name}
+                desc={e.desc}
+                title={e.title}
+                date={e.createdAt}
+              />
+            ))}
+          <button onClick={() => setPage((prev) => prev + 1)}>Load More</button>
         </div>
         <div className="right">
           <div className="title">

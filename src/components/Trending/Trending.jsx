@@ -1,8 +1,19 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import Post from '../Post/Post'
 import './Trending.scss'
 
-const Trending = ({data}) => {
+const Trending = () => {
+  const [data, setData] = useState(null)
+
+  const fetch = async () => {
+    const { data } = await axios.get(`http://localhost:4000/blogs?limit=6`)
+    setData(data)
+  }
+  useEffect(() => {
+    fetch()
+  }, [])
+
   return (
     <div className="trending">
       <div className="container">
@@ -23,16 +34,17 @@ const Trending = ({data}) => {
           </div>
         </div>
         <div className="pp">
-          {data.slice(0, 6).map((e, index) => (
-            <Post
-              id={index + 1}
-              key={e._id}
-              path={e._id}
-              name={e.user.name}
-              title={e.title}
-              date={e.createdAt}
-            />
-          ))}
+          {data &&
+            data.map((e, index) => (
+              <Post
+                id={index + 1}
+                key={e._id}
+                path={e._id}
+                name={e.user.name}
+                title={e.title}
+                date={e.createdAt}
+              />
+            ))}
         </div>
       </div>
     </div>
