@@ -4,19 +4,7 @@ import image from '../../assets/A.png'
 import Navbar from '../../components/Navbar/Navbar'
 import Trending from '../../components/Trending/Trending'
 import AllBlogs from '../../components/AllBlogs/AllBlogs'
-import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
-
 const Home = () => {
-  const { isLoading, error, data } = useQuery(['blogs'], () =>
-    axios.get('http://localhost:4000/blogs?limit=6').then((res) => {
-      return res.data
-    }),
-  )
-  if (isLoading) return 'Loading...'
-
-  if (error) return 'An error has occurred: ' + error.message
-
   return (
     <>
       <Navbar />
@@ -39,7 +27,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <Trending data={data} />
+      <Trending />
       <AllBlogs />
     </>
   )

@@ -1,19 +1,24 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useQuery } from '@tanstack/react-query'
+
 import Post from '../Post/Post'
 import './Trending.scss'
 
 const Trending = () => {
-  const [data, setData] = useState(null)
+  const { isLoading, error, data } = useQuery(['blogs'], () =>
+    axios.get('http://localhost:4000/blogs?limit=6').then(
+      (res) => {
+        return res.data
+      },
+      {
+        keepPreviousData: true,
+      },
+    ),
+  )
+  if (isLoading) return 'Loading...'
 
-  const fetch = async () => {
-    const { data } = await axios.get(`http://localhost:4000/blogs?limit=6`)
-    setData(data)
-  }
-  useEffect(() => {
-    fetch()
-  }, [])
-
+  if (error) return 'An error has occurred: ' + error.message
   return (
     <div className="trending">
       <div className="container">

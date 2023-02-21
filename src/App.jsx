@@ -4,6 +4,7 @@ import {
   Navigate,
   Outlet,
 } from 'react-router-dom'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { React, useContext } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthContext } from './context/authContext'
@@ -36,7 +37,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <Navigate to="/register" />,
+      element: <Navigate to="/blogs" />,
     },
     {
       path: '/login',
@@ -77,6 +78,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
 }

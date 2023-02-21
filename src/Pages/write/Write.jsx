@@ -4,57 +4,62 @@ import './write.scss'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
 const Write = () => {
   const navigate = useNavigate()
   const editor = useRef(null)
-  const [content, setContent] = useState('')
-  const [cc, setCc] = useState(false)
-  const [title, setTitle] = useState('')
   const params = useParams()
-  const getBlog = async () => {
-    if (params.id !== undefined) {
-      const { data } = await axios.get(
-        'http://localhost:4000/blogs/' + params.id,
-        {
-          withCredentials: true,
-        },
-      )
-      if (data) {
-        setCc(true)
-        setTitle(data.found.title)
-        setContent(data.found.desc)
-      }
+  const [title, setTitle] = useState(null)
+  const [content, setContent] = useState(null)
+  const [cc, setCc] = useState(false)
+
+  const { data } = useQuery(['particularBlog', params.id], () =>
+    axios.get('http://localhost:4000/blogs/' + params.id).then((res) => {
+      return res.data
+    }),
+  )
+
+  useEffect(() => {
+    if (data) {
+      setCc(true)
+      setTitle(data.found.title)
+      setContent(data.found.desc)
     }
-  }
-  useEffect(function () {
-    getBlog()
   }, [])
-  const clickHandler = async () => {
-    if (cc) {
-      await axios.put(
-        'http://localhost:4000/blogs/' + params.id,
-        {
-          title: title,
-          desc: content,
-        },
-        {
-          withCredentials: true,
-        },
-      )
-    } else {
-      await axios.post(
-        'http://localhost:4000/blogs',
-        {
-          title: title,
-          desc: content,
-        },
-        {
-          withCredentials: true,
-        },
-      )
-    }
-    navigate('/blogs')
-  }
+
+  const addBlog = useMutation(
+    async (tt) => {
+      await axios.post('http://localhost:4000/blogs', tt, {
+        withCredentials: true,
+      })
+    },
+    {
+      onSuccess: () => {
+        navigate('/blogs')
+      },
+    },
+  )
+
+  const updateBlog = useMutation(
+    async (tt) => {
+      console.log(tt)
+      await axios.put('http://localhost:4000/blogs/' + params.id, tt, {
+        withCredentials: true,
+      })
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['particularBlog', params.id],
+        })
+        navigate('/blogs')
+      },
+    },
+  )
+
   return (
     <>
       <Navbar />
@@ -75,9 +80,22 @@ const Write = () => {
             tabIndex={1} // tabIndex of textarea
             onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
           />
-          <button className="publish" onClick={clickHandler}>
-            {cc ? 'Update' : 'Publish'}
-          </button>
+          {cc && (
+            <button
+              className="publish"
+              onClick={() => updateBlog.mutate({ title: title, desc: content })}
+            >
+              Update
+            </button>
+          )}
+          {!cc && (
+            <button
+              className="publish"
+              onClick={() => addBlog.mutate({ title: title, desc: content })}
+            >
+              Publish
+            </button>
+          )}
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import React from 'react'
 import { useContext } from 'react'
@@ -9,22 +9,35 @@ import './Show.scss'
 
 const Show = () => {
   const navigate = useNavigate()
-  const deleteHandler = async () => {
-    await axios.delete('http://localhost:4000/blogs/' + params, {
-      withCredentials: true,
-    })
-    navigate('/blogs')
-  }
-  const { currentUser } = useContext(AuthContext)
   const params = useLocation().pathname.split('/')[2]
-  const { isLoading, error, data } = useQuery(['particularBlog'], () =>
-    axios.get('http://localhost:4000/blogs/' + params).then((res) => {
-      return res.data
-    }),
+  const { currentUser } = useContext(AuthContext)
+
+  const deleteBlog = useMutation(
+    async (param) => {
+      await axios.delete('http://localhost:4000/blogs/' + param, {
+        withCredentials: true,
+      })
+    },
+    {
+      onSuccess: () => {
+        navigate('/blogs')
+      },
+    },
+  )
+  const { isLoading, error, data } = useQuery(
+    ['particularBlog', params],
+    () =>
+      axios.get('http://localhost:4000/blogs/' + params).then((res) => {
+        return res.data
+      }),
+    {
+      keepPreviousData: true,
+    },
   )
   if (isLoading) return 'Loading...'
 
   if (error) return 'An error has occurred: ' + error.message
+
   return (
     <>
       <Navbar />
@@ -44,7 +57,7 @@ const Show = () => {
               >
                 Update
               </button>
-              <button className="de" onClick={deleteHandler}>
+              <button className="de" onClick={() => deleteBlog.mutate(params)}>
                 Delete
               </button>
             </div>

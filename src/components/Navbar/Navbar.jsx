@@ -26,9 +26,7 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    console.log(pathname)
     window.addEventListener('scroll', isActive)
-    console.log(active)
     return () => {
       window.removeEventListener('scroll', isActive)
     }
@@ -44,7 +42,7 @@ const Navbar = () => {
         <div className="right">
           <span className="ss">Your Blogs</span>
           <span className="ss">Membership</span>
-          {!(pathname === 'blogs/new') && (
+          {!(pathname === '/blogs/new') && (
             <span
               className="ss"
               onClick={() => {
