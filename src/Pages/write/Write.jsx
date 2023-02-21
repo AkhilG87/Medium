@@ -4,16 +4,14 @@ import './write.scss'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../../components/Navbar/Navbar'
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
-
-const queryClient = new QueryClient()
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 const Write = () => {
   const navigate = useNavigate()
   const editor = useRef(null)
   const params = useParams()
-  const [title, setTitle] = useState(null)
-  const [content, setContent] = useState(null)
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const [cc, setCc] = useState(false)
 
   const { data } = useQuery(['particularBlog', params.id], () =>
@@ -23,7 +21,7 @@ const Write = () => {
   )
 
   useEffect(() => {
-    if (data) {
+    if (params.id !== undefined) {
       setCc(true)
       setTitle(data.found.title)
       setContent(data.found.desc)
@@ -52,9 +50,6 @@ const Write = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['particularBlog', params.id],
-        })
         navigate('/blogs')
       },
     },
@@ -80,15 +75,14 @@ const Write = () => {
             tabIndex={1} // tabIndex of textarea
             onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
           />
-          {cc && (
+          {cc ? (
             <button
               className="publish"
               onClick={() => updateBlog.mutate({ title: title, desc: content })}
             >
               Update
             </button>
-          )}
-          {!cc && (
+          ) : (
             <button
               className="publish"
               onClick={() => addBlog.mutate({ title: title, desc: content })}
