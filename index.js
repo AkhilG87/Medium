@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 })
 app.use(
   cors({
-    origin: ['https://stblog.netlify.app', 'http://localhost:5173'],
+    origin: ['https://meedium.netlify.app', 'http://localhost:5173'],
   }),
 )
 
