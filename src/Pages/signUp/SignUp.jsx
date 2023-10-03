@@ -11,7 +11,7 @@ const SignUp = () => {
   const clickHandler = async (e) => {
     e.preventDefault();
     await axios.post(
-      "http://api-rfe1.vercel.app0/auth/signup",
+      "https://api-rfe1.vercel.app0/auth/signup",
       {
         name: name.current.value,
         email: email.current.value,

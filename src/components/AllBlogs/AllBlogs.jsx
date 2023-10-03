@@ -10,7 +10,7 @@ const AllBlogs = () => {
   const fetch = async () => {
     const limit = page * 3;
     const { data } = await axios.get(
-      `http://api-rfe1.vercel.app0/blogs?skip=6&limit=${limit}`
+      `https://api-rfe1.vercel.app0/blogs?skip=6&limit=${limit}`
     );
     setData(data);
   };

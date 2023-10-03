@@ -9,12 +9,12 @@ export const AuthContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
   const getAllData = async () => {
-    const res = await axios.get("http://api-rfe1.vercel.app0/blogs");
+    const res = await axios.get("https://api-rfe1.vercel.app0/blogs");
     setData(res.data);
   };
   const login = async (inputs) => {
     const res = await axios.post(
-      "http://api-rfe1.vercel.app0/auth/login",
+      "https://api-rfe1.vercel.app0/auth/login",
       inputs,
       {
         withCredentials: true,
