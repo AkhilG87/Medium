@@ -15,7 +15,7 @@ const Write = () => {
   const [cc, setCc] = useState(false);
 
   const { data } = useQuery(["particularBlog", params.id], () =>
-    axios.get("https://api-rfe1.vercel.app0/blogs/" + params.id).then((res) => {
+    axios.get("https://api-rfe1.vercel.app/blogs/" + params.id).then((res) => {
       return res.data;
     })
   );
@@ -30,7 +30,7 @@ const Write = () => {
 
   const addBlog = useMutation(
     async (tt) => {
-      await axios.post("https://api-rfe1.vercel.app0/blogs", tt, {
+      await axios.post("https://api-rfe1.vercel.app/blogs", tt, {
         withCredentials: true,
       });
     },
@@ -44,7 +44,7 @@ const Write = () => {
   const updateBlog = useMutation(
     async (tt) => {
       console.log(tt);
-      await axios.put("https://api-rfe1.vercel.app0/blogs/" + params.id, tt, {
+      await axios.put("https://api-rfe1.vercel.app/blogs/" + params.id, tt, {
         withCredentials: true,
       });
     },
