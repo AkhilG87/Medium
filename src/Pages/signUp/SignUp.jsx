@@ -1,17 +1,17 @@
-import axios from 'axios'
-import React, { useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import './signup.scss'
+import axios from "axios";
+import React, { useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./signup.scss";
 
 const SignUp = () => {
-  const name = useRef()
-  const email = useRef()
-  const password = useRef()
-  const navigate = useNavigate()
+  const name = useRef();
+  const email = useRef();
+  const password = useRef();
+  const navigate = useNavigate();
   const clickHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     await axios.post(
-      'http://localhost:4000/auth/signup',
+      "http://api-rfe1.vercel.app0/auth/signup",
       {
         name: name.current.value,
         email: email.current.value,
@@ -19,10 +19,10 @@ const SignUp = () => {
       },
       {
         withCredentials: true,
-      },
-    )
-    navigate('/login')
-  }
+      }
+    );
+    navigate("/login");
+  };
 
   return (
     <div className="sign">
@@ -58,7 +58,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

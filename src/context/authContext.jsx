@@ -1,27 +1,31 @@
-import axios from 'axios'
-import { React, createContext, useEffect, useState } from 'react'
+import axios from "axios";
+import { React, createContext, useEffect, useState } from "react";
 
-export const AuthContext = createContext()
+export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem('user')) || null,
-  )
+    JSON.parse(localStorage.getItem("user")) || null
+  );
   const getAllData = async () => {
-    const res = await axios.get('http://localhost:4000/blogs')
-    setData(res.data)
-  }
+    const res = await axios.get("http://api-rfe1.vercel.app0/blogs");
+    setData(res.data);
+  };
   const login = async (inputs) => {
-    const res = await axios.post('http://localhost:4000/auth/login', inputs, {
-      withCredentials: true,
-    })
-    setCurrentUser(res.data)
-  }
+    const res = await axios.post(
+      "http://api-rfe1.vercel.app0/auth/login",
+      inputs,
+      {
+        withCredentials: true,
+      }
+    );
+    setCurrentUser(res.data);
+  };
 
   useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(currentUser))
-  }, [currentUser])
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
 
   return (
     <AuthContext.Provider
@@ -29,5 +33,5 @@ export const AuthContextProvider = ({ children }) => {
     >
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};

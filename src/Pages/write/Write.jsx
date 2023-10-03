@@ -1,59 +1,59 @@
-import React, { useState, useRef, useEffect } from 'react'
-import JoditEditor from 'jodit-react'
-import './write.scss'
-import axios from 'axios'
-import { useNavigate, useParams } from 'react-router-dom'
-import Navbar from '../../components/Navbar/Navbar'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import React, { useState, useRef, useEffect } from "react";
+import JoditEditor from "jodit-react";
+import "./write.scss";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const Write = () => {
-  const navigate = useNavigate()
-  const editor = useRef(null)
-  const params = useParams()
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [cc, setCc] = useState(false)
+  const navigate = useNavigate();
+  const editor = useRef(null);
+  const params = useParams();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [cc, setCc] = useState(false);
 
-  const { data } = useQuery(['particularBlog', params.id], () =>
-    axios.get('http://localhost:4000/blogs/' + params.id).then((res) => {
-      return res.data
-    }),
-  )
+  const { data } = useQuery(["particularBlog", params.id], () =>
+    axios.get("http://api-rfe1.vercel.app0/blogs/" + params.id).then((res) => {
+      return res.data;
+    })
+  );
 
   useEffect(() => {
     if (params.id !== undefined) {
-      setCc(true)
-      setTitle(data.found.title)
-      setContent(data.found.desc)
+      setCc(true);
+      setTitle(data.found.title);
+      setContent(data.found.desc);
     }
-  }, [])
+  }, []);
 
   const addBlog = useMutation(
     async (tt) => {
-      await axios.post('http://localhost:4000/blogs', tt, {
+      await axios.post("http://api-rfe1.vercel.app0/blogs", tt, {
         withCredentials: true,
-      })
+      });
     },
     {
       onSuccess: () => {
-        navigate('/blogs')
+        navigate("/blogs");
       },
-    },
-  )
+    }
+  );
 
   const updateBlog = useMutation(
     async (tt) => {
-      console.log(tt)
-      await axios.put('http://localhost:4000/blogs/' + params.id, tt, {
+      console.log(tt);
+      await axios.put("http://api-rfe1.vercel.app0/blogs/" + params.id, tt, {
         withCredentials: true,
-      })
+      });
     },
     {
       onSuccess: () => {
-        navigate('/blogs')
+        navigate("/blogs");
       },
-    },
-  )
+    }
+  );
 
   return (
     <>
@@ -65,7 +65,7 @@ const Write = () => {
             type="text"
             value={title}
             onChange={(e) => {
-              setTitle(e.target.value)
+              setTitle(e.target.value);
             }}
           />
           <label htmlFor="">Description</label>
@@ -93,7 +93,7 @@ const Write = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Write
+export default Write;

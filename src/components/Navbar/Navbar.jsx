@@ -1,52 +1,52 @@
-import React, { useContext, useEffect, useState } from 'react'
-import './Navbar.scss'
-import image from '../../assets/logo.png'
-import { AuthContext } from '../../context/authContext'
-import axios from 'axios'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from "react";
+import "./Navbar.scss";
+import image from "../../assets/logo.png";
+import { AuthContext } from "../../context/authContext";
+import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const navigate = useNavigate()
-  const [active, setActive] = useState(false)
-  const { setCurrentUser, currentUser } = useContext(AuthContext)
-  const { pathname } = useLocation()
+  const navigate = useNavigate();
+  const [active, setActive] = useState(false);
+  const { setCurrentUser, currentUser } = useContext(AuthContext);
+  const { pathname } = useLocation();
 
   const clickHandler = async () => {
-    await axios.post('http://localhost:4000/auth/logout', {
+    await axios.post("http://api-rfe1.vercel.app0/auth/logout", {
       withCredentials: true,
-    })
-    localStorage.setItem('user', 'null')
-    setCurrentUser(null)
-  }
+    });
+    localStorage.setItem("user", "null");
+    setCurrentUser(null);
+  };
 
   const isActive = () => {
     {
-      window.scrollY > 480 ? setActive(true) : setActive(false)
+      window.scrollY > 480 ? setActive(true) : setActive(false);
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener('scroll', isActive)
+    window.addEventListener("scroll", isActive);
     return () => {
-      window.removeEventListener('scroll', isActive)
-    }
-  }, [active])
+      window.removeEventListener("scroll", isActive);
+    };
+  }, [active]);
   return (
     <div
-      className={active || pathname !== '/blogs' ? 'navbar active' : 'navbar'}
+      className={active || pathname !== "/blogs" ? "navbar active" : "navbar"}
     >
       <div className="container">
-        <div className="logo" onClick={() => navigate('/blogs')}>
+        <div className="logo" onClick={() => navigate("/blogs")}>
           <img src={image} alt="" />
         </div>
         <div className="right">
           <span className="ss">Your Blogs</span>
           <span className="ss">Membership</span>
-          {!(pathname === '/blogs/new') && (
+          {!(pathname === "/blogs/new") && (
             <span
               className="ss"
               onClick={() => {
-                navigate('/blogs/new')
+                navigate("/blogs/new");
               }}
             >
               Write
@@ -63,7 +63,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

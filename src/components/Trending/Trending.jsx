@@ -1,24 +1,24 @@
-import axios from 'axios'
-import React from 'react'
-import { useQuery } from '@tanstack/react-query'
+import axios from "axios";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 
-import Post from '../Post/Post'
-import './Trending.scss'
+import Post from "../Post/Post";
+import "./Trending.scss";
 
 const Trending = () => {
-  const { isLoading, error, data } = useQuery(['blogs'], () =>
-    axios.get('http://localhost:4000/blogs?limit=6').then(
+  const { isLoading, error, data } = useQuery(["blogs"], () =>
+    axios.get("http://api-rfe1.vercel.app0/blogs?limit=6").then(
       (res) => {
-        return res.data
+        return res.data;
       },
       {
         keepPreviousData: true,
-      },
-    ),
-  )
-  if (isLoading) return 'Loading...'
+      }
+    )
+  );
+  if (isLoading) return "Loading...";
 
-  if (error) return 'An error has occurred: ' + error.message
+  if (error) return "An error has occurred: " + error.message;
   return (
     <div className="trending">
       <div className="container">
@@ -53,7 +53,7 @@ const Trending = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Trending
+export default Trending;

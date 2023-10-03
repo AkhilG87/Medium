@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import './AllBlogs.scss'
-import Blog from '../Blog/Blog'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import "./AllBlogs.scss";
+import Blog from "../Blog/Blog";
+import axios from "axios";
 
 const AllBlogs = () => {
-  const [page, setPage] = useState(1)
-  const [data, setData] = useState(null)
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState(null);
 
   const fetch = async () => {
-    const limit = page * 3
+    const limit = page * 3;
     const { data } = await axios.get(
-      `http://localhost:4000/blogs?skip=6&limit=${limit}`,
-    )
-    setData(data)
-  }
+      `http://api-rfe1.vercel.app0/blogs?skip=6&limit=${limit}`
+    );
+    setData(data);
+  };
   useEffect(() => {
-    fetch()
-  }, [page])
+    fetch();
+  }, [page]);
 
   return (
     <div className="allblogs">
@@ -83,7 +83,7 @@ const AllBlogs = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AllBlogs
+export default AllBlogs;
