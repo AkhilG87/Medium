@@ -7,7 +7,7 @@ import "./Trending.scss";
 
 const Trending = () => {
   const { isLoading, error, data } = useQuery(["blogs"], () =>
-    axios.get("https://api-rfe1.vercel.app/blogs?limit=6").then(
+    axios.get("https://api-akhilg87.vercel.app/blogs?limit=6").then(
       (res) => {
         return res.data;
       },

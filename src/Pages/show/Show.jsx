@@ -14,7 +14,7 @@ const Show = () => {
 
   const deleteBlog = useMutation(
     async (param) => {
-      await axios.delete("https://api-rfe1.vercel.app/blogs/" + param, {
+      await axios.delete("https://api-akhilg87.vercel.app/blogs/" + param, {
         withCredentials: true,
       });
     },
@@ -27,9 +27,11 @@ const Show = () => {
   const { isLoading, error, data } = useQuery(
     ["particularBlog", params],
     () =>
-      axios.get("https://api-rfe1.vercel.app/blogs/" + params).then((res) => {
-        return res.data;
-      }),
+      axios
+        .get("https://api-akhilg87.vercel.app/blogs/" + params)
+        .then((res) => {
+          return res.data;
+        }),
     {
       keepPreviousData: true,
     }

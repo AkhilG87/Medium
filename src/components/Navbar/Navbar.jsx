@@ -12,7 +12,7 @@ const Navbar = () => {
   const { pathname } = useLocation();
 
   const clickHandler = async () => {
-    await axios.post("https://api-rfe1.vercel.app/auth/logout", {
+    await axios.post("https://api-akhilg87.vercel.app/auth/logout", {
       withCredentials: true,
     });
     localStorage.setItem("user", "null");
